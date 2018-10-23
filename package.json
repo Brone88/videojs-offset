@@ -18,7 +18,6 @@
     "build:js:rollup-modules": "rollup -c scripts/modules.rollup.config.js",
     "build:js:rollup-umd": "rollup -c scripts/umd.rollup.config.js",
     "build:js:uglify": "uglifyjs dist/videojs-offset.js --comments --mangle --compress --ie8 -o dist/videojs-offset.min.js",
-    "build:test": "rollup -c scripts/test.rollup.config.js",
     "clean": "rimraf dist test/dist",
     "postclean": "mkdirp dist test/dist",
     "docs": "npm-run-all docs:*",

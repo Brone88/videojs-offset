@@ -1,11 +1,16 @@
-import videojs from 'video.js';
-import {version as VERSION} from '../package.json';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var videojs = _interopDefault(require('video.js'));
 
 // Default options for the plugin.
-const defaults = {};
+var defaults = {};
 
 // Cross-compatibility for Video.js 5 and 6.
-const registerPlugin = videojs.registerPlugin || videojs.plugin;
+var registerPlugin = videojs.registerPlugin || videojs.plugin;
 // const dom = videojs.dom || videojs;
 
 /**
@@ -14,14 +19,14 @@ const registerPlugin = videojs.registerPlugin || videojs.plugin;
  * @function onPlayerTimeUpdate
  *
  */
-const onPlayerTimeUpdate = function() {
-  const curr = this.currentTime();
+var onPlayerTimeUpdate = function onPlayerTimeUpdate() {
+  var curr = this.currentTime();
 
   if (curr < 0) {
     this.currentTime(0);
     this.play();
   }
-  if (this._offsetEnd > 0 && curr > (this._offsetEnd - this._offsetStart)) {
+  if (this._offsetEnd > 0 && curr > this._offsetEnd - this._offsetStart) {
     this.off('timeupdate', onPlayerTimeUpdate);
     this.pause();
     this.trigger('ended');
@@ -47,8 +52,8 @@ const onPlayerTimeUpdate = function() {
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-const onPlayerReady = (player, options) => {
-  player.one('play', () => {
+var onPlayerReady = function onPlayerReady(player, options) {
+  player.one('play', function () {
     player.on('timeupdate', onPlayerTimeUpdate);
   });
 };
@@ -65,9 +70,11 @@ const onPlayerReady = (player, options) => {
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-export function offset(options) {
+function offset(options) {
+  var _this = this;
+
   options = options || {};
-  const Player = this.constructor;
+  var Player = this.constructor;
 
   this._offsetStart = parseFloat(options.start || '0');
   this._offsetEnd = parseFloat(options.end || '0');
@@ -82,32 +89,30 @@ export function offset(options) {
       remainingTime: Player.prototype.remainingTime
     };
 
-    Player.prototype.duration = function() {
+    Player.prototype.duration = function () {
       if (this._offsetEnd > 0) {
         return this._offsetEnd - this._offsetStart;
       }
       return Player.__super__.duration.apply(this, arguments) - this._offsetStart;
     };
 
-    Player.prototype.currentTime = function(seconds) {
+    Player.prototype.currentTime = function (seconds) {
       if (seconds !== undefined) {
-        return Player.__super__.currentTime
-          .call(this, seconds + this._offsetStart);
+        return Player.__super__.currentTime.call(this, seconds + this._offsetStart);
       }
 
-      return Player.__super__.currentTime
-        .apply(this) - this._offsetStart;
+      return Player.__super__.currentTime.apply(this) - this._offsetStart;
     };
 
-    Player.prototype.remainingTime = function() {
+    Player.prototype.remainingTime = function () {
       return this.duration() - this.currentTime();
     };
 
-    Player.prototype.startOffset = function() {
+    Player.prototype.startOffset = function () {
       return this._offsetStart;
     };
 
-    Player.prototype.endOffset = function() {
+    Player.prototype.endOffset = function () {
       if (this._offsetEnd > 0) {
         return this._offsetEnd;
       }
@@ -115,7 +120,9 @@ export function offset(options) {
     };
   }
 
-  this.ready(() => {
-    onPlayerReady(this, videojs.mergeOptions(defaults, options));
+  this.ready(function () {
+    onPlayerReady(_this, videojs.mergeOptions(defaults, options));
   });
 }
+
+exports.offset = offset;
