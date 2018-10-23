@@ -1,10 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var videojs = _interopDefault(require('video.js'));
+
+var version = "2.0.0-beta.2";
 
 // Default options for the plugin.
 var defaults = {};
@@ -70,7 +70,7 @@ var onPlayerReady = function onPlayerReady(player, options) {
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-function offset(options) {
+var offset = function offset(options) {
   var _this = this;
 
   options = options || {};
@@ -123,6 +123,11 @@ function offset(options) {
   this.ready(function () {
     onPlayerReady(_this, videojs.mergeOptions(defaults, options));
   });
-}
+};
 
-exports.offset = offset;
+// Register the plugin with video.js.
+// registerPlugin('offset', offset);
+// Include the version number.
+offset.VERSION = version;
+
+module.exports = offset;

@@ -65,7 +65,7 @@ const onPlayerReady = (player, options) => {
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-export function offset(options) {
+const offset = function(options) {
   options = options || {};
   const Player = this.constructor;
 
@@ -118,4 +118,11 @@ export function offset(options) {
   this.ready(() => {
     onPlayerReady(this, videojs.mergeOptions(defaults, options));
   });
-}
+};
+
+// Register the plugin with video.js.
+// registerPlugin('offset', offset);
+// Include the version number.
+offset.VERSION = VERSION;
+
+export default offset;

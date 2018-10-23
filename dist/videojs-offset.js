@@ -5,12 +5,14 @@
  * @license MIT
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('video.js')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'video.js'], factory) :
-	(factory((global.videojsOffset = {}),global.videojs));
-}(this, (function (exports,videojs) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js')) :
+	typeof define === 'function' && define.amd ? define(['video.js'], factory) :
+	(global.videojsOffset = factory(global.videojs));
+}(this, (function (videojs) { 'use strict';
 
 videojs = videojs && videojs.hasOwnProperty('default') ? videojs['default'] : videojs;
+
+var version = "2.0.0-beta.2";
 
 // Default options for the plugin.
 var defaults = {};
@@ -76,7 +78,7 @@ var onPlayerReady = function onPlayerReady(player, options) {
  * @param    {Object} [options={}]
  *           An object of options left to the plugin author to define.
  */
-function offset(options) {
+var offset = function offset(options) {
   var _this = this;
 
   options = options || {};
@@ -129,10 +131,13 @@ function offset(options) {
   this.ready(function () {
     onPlayerReady(_this, videojs.mergeOptions(defaults, options));
   });
-}
+};
 
-exports.offset = offset;
+// Register the plugin with video.js.
+// registerPlugin('offset', offset);
+// Include the version number.
+offset.VERSION = version;
 
-Object.defineProperty(exports, '__esModule', { value: true });
+return offset;
 
 })));
